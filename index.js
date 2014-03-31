@@ -11,7 +11,8 @@ var program = require('commander'),
 var tags = require('./lib/tags'),
     tracks = require('./lib/tracks'),
     player = require('./lib/player'),
-    system = require('./lib/system');
+    system = require('./lib/system'),
+    config = require('./lib/config');
 
 
 function showTags() {
@@ -114,6 +115,7 @@ function createWithTagsSubCommand(name, tag) {
     .command('play [pattern]')
     .option('-r, --random', 'play random file')
     .option('-s, --sleep-after', 'put the computer to sleep after finish')
+    .option('-v, --verbose', 'Tell me everything')
     .description('play first file with the given [pattern]')
     .action(function(pattern, program) {
       assertTag();
@@ -124,6 +126,10 @@ function createWithTagsSubCommand(name, tag) {
       if (!pattern && !random) {
         console.error('\n  %s must specify pattern or --random\n', 'error'.red);
         process.exit(1);
+      }
+
+      if (program.verbose) {
+        system.verbose(true);
       }
 
       if (!pattern) {
@@ -161,7 +167,7 @@ function createWithTagsSubCommand(name, tag) {
         var bar = new ProgressBar('  [:bar] :elapsed/' + Math.floor(totalDuration / 1000) + ' :percent', { total: 100, width: 50 });
         
         progress.on('change', function(current) {
-          bar.update(current / totalDuration);
+          bar.update(Math.max(0.01, Math.min(current / totalDuration, 1.0)));
         });
 
         progress.on('end', function() {
@@ -199,7 +205,6 @@ function createWithTagsSubCommand(name, tag) {
 
 
 // program initialization
-program.version(version);
 
 var tagsCmd = program.command('tag <cmd>');
 
@@ -217,12 +222,8 @@ tagsCmd.outputHelp = function() {
   createTagsSubcommand('hplayer tag').outputHelp();
 };
 
-/*
-  .option('-s, --sleep-on-finish', 'Sleep on finish')
-  .option('-r, --random', 'Play a random track')
-  .option('-t, --track [track]', 'Play the specified track (matched via pattern)');
-*/
 function withTagAction() {
+
   var args = program.rawArgs;
   var subArgs = args.slice(0, 2).concat(args.slice(3));
 
