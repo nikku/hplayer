@@ -1,6 +1,6 @@
 {
   "name": "hplayer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,6 @@
     "commander": "^2.2.0",
     "lodash": "^2.4.1",
     "minimatch": "^0.2.14",
-    "node-vlc": "https://github.com/Nikku/node-vlc/archive/master.tar.gz"
+    "vlc": "https://github.com/Nikku/node-vlc/archive/master.tar.gz"
   }
 }
