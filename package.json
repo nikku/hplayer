@@ -1,0 +1,20 @@
+{
+  "name": "hplayer",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "bin": "bin/hplayer",
+  "author": "Nico Rehwaldt <git_nikku@nixis.de>",
+  "license": "MIT",
+  "dependencies": {
+    "progress": "^1.1.5",
+    "colors": "^0.6.2",
+    "commander": "^2.2.0",
+    "lodash": "^2.4.1",
+    "minimatch": "^0.2.14",
+    "node-vlc": "https://github.com/Nikku/node-vlc/archive/master.tar.gz"
+  }
+}
