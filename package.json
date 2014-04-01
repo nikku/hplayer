@@ -15,6 +15,7 @@
     "commander": "^2.2.0",
     "lodash": "^2.4.1",
     "minimatch": "^0.2.14",
-    "vlc": "https://github.com/Nikku/node-vlc/archive/master.tar.gz"
+    "vlc": "https://github.com/Nikku/node-vlc/archive/master.tar.gz",
+    "appdirectory": "^0.1.0"
   }
 }
