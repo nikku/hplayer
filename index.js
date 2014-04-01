@@ -71,7 +71,10 @@ function createTagsSubcommand(name) {
 
   subcommand
     .on('*', function(str) {
-      console.error('\n  %s unknown command: %s, try --help\n', 'error'.red, str[0]);
+      console.error();
+      console.error('\n  %s: unknown command: %s, try --help\n', 'error'.red, str[0]);
+      console.error();
+
       process.exit(1);
     });
 
@@ -83,7 +86,10 @@ function createWithTagsSubCommand(name, tag) {
 
   function assertTag() {
     if (!tag) {
-      console.error('\n  %s wrong syntax, use #tagname <cmd>\n', 'error'.red, str[0]);
+      console.error();
+      console.error('\n  %s: no #tag supplied, try hplayer #tag --help\n', 'error'.red);
+      console.error();
+
       process.exit(1);
     }
   }
@@ -124,7 +130,10 @@ function createWithTagsSubCommand(name, tag) {
           sleepAfter = program.sleepAfter;
 
       if (!pattern && !random) {
-        console.error('\n  %s must specify pattern or --random\n', 'error'.red);
+        console.error();
+        console.error('  %s: must specify pattern or --random', 'error'.red);
+        console.error();
+
         process.exit(1);
       }
 
@@ -139,7 +148,10 @@ function createWithTagsSubCommand(name, tag) {
       var sets = tracks.find(tag, pattern);
 
       if (!sets.length) {
-        console.error('\n  %s no matching files\n', 'error'.red);
+        console.error();
+        console.error('  %s: no matching files', 'error'.red);
+        console.error();
+
         process.exit(1);
       }
 
@@ -196,13 +208,17 @@ function createWithTagsSubCommand(name, tag) {
 
   subcommand
     .on('*', function(str) {
-      console.error('\n  %s unknown command: %s, try hplayer #tag --help\n', 'error'.red, str[0]);
+      console.error();
+      console.error('  %s: unknown command: %s, try hplayer #tag --help', 'error'.red, str[0]);
+      console.error();
+      
       process.exit(1);
     });
 
   return subcommand;
 }
 
+program.version(version);
 
 // program initialization
 
@@ -225,11 +241,20 @@ tagsCmd.outputHelp = function() {
 function withTagAction() {
 
   var args = program.rawArgs;
-  var subArgs = args.slice(0, 2).concat(args.slice(3));
+  var subArgs = args.slice(3);
+  var allArgs = args.slice(0, 2).concat(subArgs);
 
   var tag = args[2];
 
-  createWithTagsSubCommand('hplayer #tag', tag).parse(subArgs);
+  if (!subArgs.length) {
+    console.error();
+    console.error('  %s: missing tag command, try hplayer #tag --help', 'error'.red);
+    console.error();
+
+    process.exit(1);
+  }
+
+  createWithTagsSubCommand('hplayer #tag', tag).parse(allArgs);
 }
 
 
@@ -247,4 +272,24 @@ withTagCommand.outputHelp = function() {
 program.on('*', withTagAction);
 
 
+program
+  .option('--cfg', 'display configuration file location');
+
 program.parse(process.argv);
+
+if (!program.args.length) {
+
+  if (program.cfg) {
+    console.log();
+    console.log('  config file location: %s', config.location());
+    console.log();
+  } else {
+    console.log();
+    console.log('  %s - an audio drama fall asleep specialized command line based media player', 'hplayer'.yellow);
+    console.log();
+    console.log('  type hplayer --help for assistance');
+    console.log();
+  }
+
+  process.exit();
+}
