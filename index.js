@@ -172,11 +172,11 @@ function createWithTagsSubCommand(name, tag) {
 
       progress.on('start', function(totalDuration) {
 
-        console.log('\n  playing %s (%s tracks, ~%smin)\n', set.name.yellow, set.tracks.length, Math.floor(totalDuration / 1000 / 60));
+        console.log('\n  playing %s (%s tracks, ~%smin)\n', set.name.yellow, set.tracks.length, Math.floor(totalDuration / 60));
 
         var ProgressBar = require('progress');
 
-        var bar = new ProgressBar('  [:bar] :elapsed/' + Math.floor(totalDuration / 1000) + ' :percent', { total: 100, width: 50 });
+        var bar = new ProgressBar('  [:bar] :elapsed/' + Math.floor(totalDuration) + ' :percent', { total: 100, width: 50 });
         
         progress.on('change', function(current) {
           bar.update(Math.max(0.01, Math.min(current / totalDuration, 1.0)));
@@ -204,6 +204,13 @@ function createWithTagsSubCommand(name, tag) {
         });
 
       });
+
+      progress.on('error', function(err) {
+        console.error();
+        console.error('  %s', err.message);
+        console.error();
+      });
+
     });
 
   subcommand

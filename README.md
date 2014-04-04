@@ -1,8 +1,8 @@
 # hplayer
 
-An audio drama fall asleep specialized command line based media player using [libvlc](https://www.videolan.org/vlc/libvlc.html).
+An audio drama fall asleep specialized command line based media player.
 
-Written in JavaScript. Building on top of [NodeJS](http://nodejs.org) and [node-vlc](https://github.com/Nikku/node-vlc).
+Written for NodeJS, built on top of [mpv](http://mpv.io/).
 
 
 ## Setup
@@ -17,9 +17,9 @@ npm install hplayer
 
 ### Download and Configure VLC
 
-Download and install a copy of [VLC media player](https://www.videolan.org/vlc/).
+Download and install a copy of [mpv](http://mpv.io/).
 
-Configure the location of the player through the `VLC_HOME` environment variable.
+Configure the location of the player through the `MPV_HOME` environment variable.
 
 
 ## Usage
