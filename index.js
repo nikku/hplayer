@@ -81,6 +81,28 @@ function createTagsSubcommand(name) {
   return subcommand;
 }
 
+function getRandom(n, elements) {
+  var t,
+      idx,
+      i = 0,
+      result = [];
+
+  while (i < n) {
+    if (!elements.length) {
+      break;
+    }
+
+    idx = Math.floor(elements.length * Math.random());
+
+    t = elements[idx];
+    elements.splice(idx, 1);
+
+    result.push(t);
+    i++;
+  }
+
+  return result;
+}
 
 function createWithTagsSubCommand(name, tag) {
 
@@ -120,6 +142,7 @@ function createWithTagsSubCommand(name, tag) {
   subcommand
     .command('play [pattern]')
     .option('-r, --random', 'play random file')
+    .option('-n, --num [files]', 'play the number of files', 1)
     .option('-s, --sleep-after', 'put the computer to sleep after finish')
     .option('-v, --verbose', 'Tell me everything')
     .description('play first file with the given [pattern]')
@@ -127,6 +150,7 @@ function createWithTagsSubCommand(name, tag) {
       assertTag();
 
       var random = program.random,
+          number = program.num,
           sleepAfter = program.sleepAfter;
 
       if (!pattern && !random) {
@@ -157,9 +181,18 @@ function createWithTagsSubCommand(name, tag) {
 
       var set;
 
-      if (random) {
+      if (random && !number) {
         var idx = Math.floor(Math.random() * sets.length);
         set = sets[idx];
+      } else
+      if (number) {
+        var randomSets = getRandom(number, sets);
+
+        set = {
+          name: 'various in ' + tag + (pattern !== '*' ? ' matching ' + pattern : ''),
+          tracks: _.flatten(_.collect(randomSets, function(s) { return s.tracks; })),
+          various: true
+        };
       } else {
         set = sets[0];
       }
